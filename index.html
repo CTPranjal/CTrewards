@@ -738,6 +738,7 @@
                                 Points</button>
                         </div>
                     </div>
+                    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
                     <div class="section-title">PLAY & WIN</div>
                     <div class="bottom-pad"></div>
@@ -782,13 +783,31 @@
                 const elVch = document.getElementById('vouchers');
                 const toast = document.getElementById('toast');
 
+                // function showToast(msg) {
+                //     toast.textContent = msg; toast.classList.add('show');
+                //     setTimeout(() => toast.classList.remove('show'), 1800);
+                // }
+
                 function showToast(msg) {
-                    toast.textContent = msg; toast.classList.add('show');
+                    let toast = document.getElementById('toast');
+                    // If it's missing, create it so this never throws.
+                    if (!toast) {
+                        toast = document.createElement('div');
+                        toast.id = 'toast';
+                        toast.className = 'toast';
+                        document.body.appendChild(toast);
+                    }
+                    toast.textContent = msg;
+                    toast.classList.add('show');
                     setTimeout(() => toast.classList.remove('show'), 1800);
                 }
                 function fmtCurrency(v) { return 'RM ' + v; }
-                function sync() { elCash.textContent = fmtCurrency(state.cashback); elPts.textContent = state.points; elVch.textContent = state.vouchers; }
-
+                function sync() {
+                    console.log("Syncing state:", state);
+                    elCash.textContent = fmtCurrency(state.cashback);
+                    elPts.textContent = state.points;
+                    elVch.textContent = state.vouchers;
+                }
                 // --- Redeem buttons ---
                 document.querySelectorAll('.redeem .cta').forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -810,31 +829,31 @@
 
                 let currentReward = null;
 
-                function openScratch(reward) {
+                // function openScratch(reward) {
 
-                    currentReward = reward;
+                //     currentReward = reward;
 
-                    // ensure modal is visible and reset any previous fade state
-                    scratchModal.classList.remove('fade-out');
-                    scratchModal.classList.add('active');
+                //     // ensure modal is visible and reset any previous fade state
+                //     scratchModal.classList.remove('fade-out');
+                //     scratchModal.classList.add('active');
 
 
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.fillStyle = '#9ca3af';
-                    ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+                //     ctx.globalCompositeOperation = 'source-over';
+                //     ctx.fillStyle = '#9ca3af';
+                //     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-                    ctx.fillStyle = '#b45309';
-                    ctx.font = 'bold 36px system-ui';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
+                //     ctx.fillStyle = '#b45309';
+                //     ctx.font = 'bold 36px system-ui';
+                //     ctx.textAlign = 'center';
+                //     ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
 
-                    // switch to erasing mode for user interactions
-                    ctx.globalCompositeOperation = 'destination-out';
+                //     // switch to erasing mode for user interactions
+                //     ctx.globalCompositeOperation = 'destination-out';
 
-                    // reset flags + UI
-                    rewardRevealed = false;
-                    scratchResult.textContent = '…';
-                }
+                //     // reset flags + UI
+                //     rewardRevealed = false;
+                //     scratchResult.textContent = '…';
+                // }
 
 
                 let drawing = false;
@@ -899,12 +918,25 @@
                     if (!currentReward) return;
                     const [type, val] = currentReward.split(':');
                     const num = +val;
-                    if (type === 'points') { state.points += num; scratchResult.textContent = `You won +${num} points!`; showToast(`+${num} points`); }
-                    if (type === 'cashback') { state.cashback += num; scratchResult.textContent = `You won +RM ${num} cashback!`; showToast(`+RM ${num} cashback`); }
-                    if (type === 'voucher') { state.vouchers += num; scratchResult.textContent = `You won +${num} voucher!`; showToast(`+${num} voucher`); }
+
+                    if (type === 'points') {
+                        state.points += num;
+                        scratchResult.textContent = `You won +${num} points!`;
+                    } else if (type === 'cashback') {
+                        state.cashback += num;
+                        scratchResult.textContent = `You won +RM ${num} cashback!`;
+                    } else if (type === 'voucher') {
+                        state.vouchers += num;
+                        scratchResult.textContent = `You won +${num} voucher!`;
+                    }
+
+                    // 🔥 Update immediately
                     sync();
 
-                    // fade out scratch card after short delay
+                    // Show toast
+                    showToast(scratchResult.textContent);
+
+                    // Allow user to *see* the reward for ~2s, then fade overlay
                     setTimeout(() => {
                         scratchModal.classList.add('fade-out');
 
@@ -916,6 +948,7 @@
                         }, 500); // match CSS transition time
                     }, 1400);
                 }
+
 
                 document.querySelectorAll('.scratch').forEach(card => {
                     card.addEventListener('click', () => openScratch(card.dataset.reward));

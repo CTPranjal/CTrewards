@@ -818,9 +818,9 @@
 
                     <div class="section-title">SCRATCH & CLAIM YOUR REWARDS</div>
                     <div class="scroll-row">
-                        <!-- <div class="card scratch" data-reward="points:50">
+                        <div class="card scratch" data-reward="coins:50">
                             <span class="title">SCRATCH CARD</span>
-                        </div> -->
+                        </div>
                         <div class="card scratch" data-reward="cashback:20">
                             <span class="title">SCRATCH CARD</span>
                         </div>
@@ -832,25 +832,25 @@
                         </div>
                     </div>
 
-                    <div class="section-title">REDEEM YOUR POINTS</div>
+                    <div class="section-title">REDEEM YOUR COINS</div>
                     <div class="redeem-grid">
                         <div class="redeem">
                             <div class="title">MOBILE RECHARGE</div>
                             <div class="desc">Buy IDR 10 Cashback Voucher</div>
-                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 100
-                                Points</button>
+                            <button class="cta" data-cost="100" data-type="voucher" data-value="1">Use 100
+                                Coins</button>
                         </div>
                         <div class="redeem">
                             <div class="title">MY GOLD</div>
                             <div class="desc">Buy IDR 10 Discount Voucher</div>
-                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 100
-                                Points</button>
+                            <button class="cta" data-cost="100" data-type="voucher" data-value="1">Use 100
+                                Coins</button>
                         </div>
                         <div class="redeem">
                             <div class="title">FASTAG RECHARGE</div>
                             <div class="desc">Buy IDR 20 Cashback Voucher</div>
                             <button class="cta" data-cost="100" data-type="voucher" data-value="1">Use 100
-                                Points</button>
+                                Coins</button>
                         </div>
                     </div>
                     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -928,6 +928,7 @@
 <script>
     const voucherTray = document.getElementById('voucherTray');
     const voucherStat = document.getElementById('vouchers');
+    const elAmount = document.querySelector('.hero .amount');
     const closeVoucherTray = document.getElementById('closeVoucherTray');
 
     let startY = 0;
@@ -980,22 +981,13 @@
 
         currentY = 0;
     }
-</script>
 
-
-
-    <script>
         // --- Simple state ---
-        const state = { cashback: 500, points: 310, vouchers: 41 };
+        const state = { cashback: 500, coins: 2000, vouchers: 41 };
         const elCash = document.getElementById('cashbackWon');
-        const elPts = document.getElementById('points');
+        // const elPts = document.getElementById('points');
         const elVch = document.getElementById('vouchers');
         const toast = document.getElementById('toast');
-
-        // function showToast(msg) {
-        //     toast.textContent = msg; toast.classList.add('show');
-        //     setTimeout(() => toast.classList.remove('show'), 1800);
-        // }
 
         function showToast(msg) {
             let toast = document.getElementById('toast');
@@ -1010,20 +1002,29 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 1800);
         }
-        function fmtCurrency(v) { return 'IDR ' + v; }
+        function fmtCurrency(v) { return 'IDR ' + v.toLocaleString(); }
+
         function sync() {
-            console.log("Syncing state:", state);
-            elCash.textContent = fmtCurrency(state.cashback);
-            elPts.textContent = state.points;
-            elVch.textContent = state.vouchers;
-        }
+                elCash.textContent = fmtCurrency(state.cashback);
+                elVch.textContent = state.vouchers;
+
+                // 🔥 ALWAYS update wallet coins visually
+                if (elAmount) {
+                    elAmount.textContent = fmtCurrency(state.coins);
+                }
+            }
         // --- Redeem buttons ---
         document.querySelectorAll('.redeem .cta').forEach(btn => {
             btn.addEventListener('click', () => {
-                const cost = +btn.dataset.cost; const type = btn.dataset.type; const value = +btn.dataset.value;
-                if (state.points < cost) { showToast('Not enough points'); return; }
-                state.points -= cost;
-                if (type === 'voucher') state.vouchers += value;
+                const cost = +btn.dataset.cost; 
+                // const type = btn.dataset.type; 
+                const value = +btn.dataset.value;
+                
+                if (state.coins < cost) { showToast('Not enough coins'); return; }
+
+                state.coins -= cost;
+                state.vouchers += value;
+                
                 sync();
                 showToast('Redeemed! +' + value + ' voucher');
             });
@@ -1037,33 +1038,6 @@
         const closeScratch = document.getElementById('closeScratch');
 
         let currentReward = null;
-
-        // function openScratch(reward) {
-
-        //     currentReward = reward;
-
-        //     // ensure modal is visible and reset any previous fade state
-        //     scratchModal.classList.remove('fade-out');
-        //     scratchModal.classList.add('active');
-
-
-        //     ctx.globalCompositeOperation = 'source-over';
-        //     ctx.fillStyle = '#9ca3af';
-        //     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-
-        //     ctx.fillStyle = '#b45309';
-        //     ctx.font = 'bold 36px system-ui';
-        //     ctx.textAlign = 'center';
-        //     ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
-
-        //     // switch to erasing mode for user interactions
-        //     ctx.globalCompositeOperation = 'destination-out';
-
-        //     // reset flags + UI
-        //     rewardRevealed = false;
-        //     scratchResult.textContent = '…';
-        // }
-
 
         let drawing = false;
         let rewardRevealed = false;
@@ -1128,9 +1102,9 @@
             const [type, val] = currentReward.split(':');
             const num = +val;
 
-            if (type === 'points') {
-                state.points += num;
-                scratchResult.textContent = `You won +${num} points!`;
+            if (type === 'coins') {
+                state.coins += num;
+                scratchResult.textContent = `You won +${num} coins!`;
             } else if (type === 'cashback') {
                 state.cashback += num;
                 scratchResult.textContent = `You won +IDR ${num} cashback!`;
@@ -1197,12 +1171,13 @@
         // Initial sync
         sync();
     </script>
+    
     <script>
         const rewards = [
-            { type: "points", value: 10, label: "+10 Points" },
+            { type: "coins", value: 10, label: "+10 Coins" },
             { type: "voucher", value: 1, label: "+1 Voucher" },
             { type: "cashback", value: 20, label: "IDR 20 Cashback" },
-            { type: "points", value: 50, label: "+50 Points" },
+            { type: "coins", value: 50, label: "+50 Coins" },
             { type: "cashback", value: 50, label: "IDR 50 Cashback" },
             { type: "voucher", value: 2, label: "+2 Vouchers" },
         ];
@@ -1296,7 +1271,7 @@
                     resultEl.textContent = `You won ${won.label}! 🎉`;
 
                     // apply reward to state
-                    if (won.type === "points") state.points += won.value;
+                    if (won.type === "coins") state.coins += won.value;
                     if (won.type === "cashback") state.cashback += won.value;
                     if (won.type === "voucher") state.vouchers += won.value;
 
@@ -1313,14 +1288,6 @@
 
         spinBtn.addEventListener("click", spinWheel);
 
-    </script>
-
-    <script>
-        // 🔐 Hardcoded identity for this demo/user
-        // const USER_IDENTITY = "77777878";
-    </script>
-
-    <script>
         const USER_IDENTITY = "77777879";
         // Fetch wallet points and update the display
         fetch(
@@ -1332,7 +1299,9 @@
                 if (data.status === 'success' && data.records && data.records.length > 0) {
                     // Get active points from the first wallet (Wallet-1)
                     const activePoints = data.records[0].activePoints || 0;
-
+                    state.coins = activePoints;
+                    sync();
+                    
                     // Update the amount display
                     const amountElement = document.querySelector('.hero .amount');
                     if (amountElement) {

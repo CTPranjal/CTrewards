@@ -199,7 +199,8 @@
 
         .stats {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
+            /* grid-template-columns: 1fr 1fr 1fr; */
             gap: 10px;
             margin: 10px 12px 0;
         }
@@ -662,6 +663,120 @@
             font-weight: bold;
             font-size: 18px;
         }
+
+        /* Voucher Tray */
+.voucher-tray {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 75%;
+    background: linear-gradient(180deg, #f9fbff, #eef4ff);
+    border-radius: 26px 26px 0 0;
+    box-shadow: 0 -20px 50px #00000025;
+
+    /* 🔒 fully hidden until activated */
+    transform: translateY(110%);
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+        transform 0.45s cubic-bezier(.2, .8, .2, 1),
+        opacity 0.3s ease;
+
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    touch-action: none; /* important for gesture control */
+}
+
+.voucher-tray.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* grab handle */
+.voucher-handle {
+    width: 44px;
+    height: 5px;
+    background: #c7d6f3;
+    border-radius: 999px;
+    margin: 10px auto 6px;
+}
+
+
+.voucher-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    font-weight: 900;
+    color: #102a57;
+    font-size: 16px;
+}
+
+.voucher-header button {
+    border: none;
+    background: #e3ecff;
+    border-radius: 10px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-weight: 900;
+}
+
+.voucher-list {
+    padding: 12px;
+    display: grid;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+.voucher-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 14px;
+    border: 1px solid #e3ebff;
+    box-shadow: 0 8px 16px #0000000d;
+}
+
+.voucher-card.blue {
+    background: linear-gradient(135deg, #e7f0ff, #f5f9ff);
+}
+
+.voucher-card.green {
+    background: linear-gradient(135deg, #e6fff4, #f3fff9);
+}
+
+.voucher-value {
+    min-width: 72px;
+    height: 72px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 18px;
+    background: linear-gradient(45deg, #ff7a00, #ffb703);
+    color: #1b1400;
+}
+
+.voucher-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.voucher-title {
+    font-weight: 900;
+    color: #0e2356;
+}
+
+.voucher-expiry {
+    font-size: 12px;
+    color: #4b648f;
+}
+
     </style>
 </head>
 
@@ -677,24 +792,24 @@
                 </div>
                 <div class="app" id="app">
                     <div class="hero">
-                        <h1>Up to</h1>
-                        <div class="amount">RM 2,000</div>
-                        <div class="sub">Cashback & Discounts →</div>
+                        <h1>Wallet Coins 💰 </h1>
+                        <div class="amount">IDR 2,000</div>
+                        <!-- <div class="sub">Cashback & Discounts →</div> -->
                         <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
-                            <button class="primary" id="redeemNow">Redeem Now</button>
-                            <span class="chip">Always personalised</span>
+                            <!-- <button class="primary" id="redeemNow">Redeem Now</button>
+                            <span class="chip">100 Coins for 1 voucher</span> -->
                         </div>
                     </div>
 
                     <div class="stats">
                         <div class="stat">
-                            <div class="big1" id="cashbackWon">RM500</div>
+                            <div class="big1" id="cashbackWon">IDR 500</div>
                             <div class="label">Cashback Won</div>
                         </div>
-                        <div class="stat">
+                        <!-- <div class="stat">
                             <div class="big" id="points">310</div>
                             <div class="label">Cashback Points</div>
-                        </div>
+                        </div> -->
                         <div class="stat">
                             <div class="big" id="vouchers">41</div>
                             <div class="label">My Vouchers</div>
@@ -703,9 +818,9 @@
 
                     <div class="section-title">SCRATCH & CLAIM YOUR REWARDS</div>
                     <div class="scroll-row">
-                        <div class="card scratch" data-reward="points:50">
+                        <!-- <div class="card scratch" data-reward="points:50">
                             <span class="title">SCRATCH CARD</span>
-                        </div>
+                        </div> -->
                         <div class="card scratch" data-reward="cashback:20">
                             <span class="title">SCRATCH CARD</span>
                         </div>
@@ -721,27 +836,27 @@
                     <div class="redeem-grid">
                         <div class="redeem">
                             <div class="title">MOBILE RECHARGE</div>
-                            <div class="desc">Buy RM 10 Cashback Voucher</div>
-                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 1000
+                            <div class="desc">Buy IDR 10 Cashback Voucher</div>
+                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 100
                                 Points</button>
                         </div>
                         <div class="redeem">
                             <div class="title">MY GOLD</div>
-                            <div class="desc">Buy RM 10 Discount Voucher</div>
-                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 1000
+                            <div class="desc">Buy IDR 10 Discount Voucher</div>
+                            <button class="cta" data-cost="1000" data-type="voucher" data-value="1">Use 100
                                 Points</button>
                         </div>
                         <div class="redeem">
                             <div class="title">FASTAG RECHARGE</div>
-                            <div class="desc">Buy RM 20 Cashback Voucher</div>
+                            <div class="desc">Buy IDR 20 Cashback Voucher</div>
                             <button class="cta" data-cost="100" data-type="voucher" data-value="1">Use 100
                                 Points</button>
                         </div>
                     </div>
                     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-                    <div class="section-title">PLAY & WIN</div>
-                    <div class="bottom-pad"></div>
+                    <!-- <div class="section-title">PLAY & WIN</div> -->
+                    <!-- <div class="bottom-pad"></div> -->
                 </div>
             </div>
 
@@ -772,340 +887,467 @@
                 </div>
             </div>
 
+            <!-- Voucher Tray -->
+            <div class="voucher-tray" id="voucherTray">
+                <div class="voucher-handle"></div>
+                <div class="voucher-header">
+                    <span>My Vouchers</span>
+                    <button id="closeVoucherTray">✕</button>
+                </div>
+
+                <div class="voucher-list">
+                    <div class="voucher-card">
+                        <div class="voucher-value">IDR 10</div>
+                        <div class="voucher-meta">
+                            <div class="voucher-title">Cashback Voucher</div>
+                            <div class="voucher-expiry">Valid till 30 Apr 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="voucher-card blue">
+                        <div class="voucher-value">IDR 20</div>
+                        <div class="voucher-meta">
+                            <div class="voucher-title">Recharge Discount</div>
+                            <div class="voucher-expiry">Valid till 15 May 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="voucher-card green">
+                        <div class="voucher-value">IDR 50</div>
+                        <div class="voucher-meta">
+                            <div class="voucher-title">Special Cashback</div>
+                            <div class="voucher-expiry">Valid till 31 May 2026</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    const voucherTray = document.getElementById('voucherTray');
+    const voucherStat = document.getElementById('vouchers');
+    const closeVoucherTray = document.getElementById('closeVoucherTray');
+
+    let startY = 0;
+    let currentY = 0;
+    let dragging = false;
+
+    // open tray
+    voucherStat.addEventListener('click', () => {
+        voucherTray.classList.add('active');
+        voucherTray.style.transform = 'translateY(0)';
+    });
+
+    // close via button
+    closeVoucherTray.addEventListener('click', closeTray);
+
+    function closeTray() {
+        voucherTray.classList.remove('active');
+        voucherTray.style.transform = '';
+    }
+
+    // swipe handling
+    voucherTray.addEventListener('pointerdown', (e) => {
+        startY = e.clientY;
+        dragging = true;
+        voucherTray.setPointerCapture(e.pointerId);
+    });
+    voucherTray.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+
+        currentY = e.clientY - startY;
+
+        if (currentY > 0) {
+            voucherTray.style.transform = `translateY(${currentY}px)`;
+        }
+    });
+
+    voucherTray.addEventListener('pointerup', endDrag);
+    voucherTray.addEventListener('pointercancel', endDrag);
+
+    function endDrag() {
+        if (!dragging) return;
+        dragging = false;
+
+        // threshold to close
+        if (currentY > 120) {
+            closeTray();
+        } else {
+            voucherTray.style.transform = 'translateY(0)';
+        }
+
+        currentY = 0;
+    }
+</script>
 
 
 
-            <script>
-                // --- Simple state ---
-                const state = { cashback: 500, points: 310, vouchers: 41 };
-                const elCash = document.getElementById('cashbackWon');
-                const elPts = document.getElementById('points');
-                const elVch = document.getElementById('vouchers');
-                const toast = document.getElementById('toast');
+    <script>
+        // --- Simple state ---
+        const state = { cashback: 500, points: 310, vouchers: 41 };
+        const elCash = document.getElementById('cashbackWon');
+        const elPts = document.getElementById('points');
+        const elVch = document.getElementById('vouchers');
+        const toast = document.getElementById('toast');
 
-                // function showToast(msg) {
-                //     toast.textContent = msg; toast.classList.add('show');
-                //     setTimeout(() => toast.classList.remove('show'), 1800);
-                // }
+        // function showToast(msg) {
+        //     toast.textContent = msg; toast.classList.add('show');
+        //     setTimeout(() => toast.classList.remove('show'), 1800);
+        // }
 
-                function showToast(msg) {
-                    let toast = document.getElementById('toast');
-                    // If it's missing, create it so this never throws.
-                    if (!toast) {
-                        toast = document.createElement('div');
-                        toast.id = 'toast';
-                        toast.className = 'toast';
-                        document.body.appendChild(toast);
-                    }
-                    toast.textContent = msg;
-                    toast.classList.add('show');
-                    setTimeout(() => toast.classList.remove('show'), 1800);
-                }
-                function fmtCurrency(v) { return 'RM ' + v; }
-                function sync() {
-                    console.log("Syncing state:", state);
-                    elCash.textContent = fmtCurrency(state.cashback);
-                    elPts.textContent = state.points;
-                    elVch.textContent = state.vouchers;
-                }
-                // --- Redeem buttons ---
-                document.querySelectorAll('.redeem .cta').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const cost = +btn.dataset.cost; const type = btn.dataset.type; const value = +btn.dataset.value;
-                        if (state.points < cost) { showToast('Not enough points'); return; }
-                        state.points -= cost;
-                        if (type === 'voucher') state.vouchers += value;
-                        sync();
-                        showToast('Redeemed! +' + value + ' voucher');
-                    });
-                });
-
-                // --- Scratch cards ---
-                const scratchModal = document.getElementById('scratchModal');
-                const scratchCanvas = document.getElementById('scratchCanvas');
-                const ctx = scratchCanvas.getContext('2d');
-                const scratchResult = document.getElementById('scratchResult');
-                const closeScratch = document.getElementById('closeScratch');
-
-                let currentReward = null;
-
-                // function openScratch(reward) {
-
-                //     currentReward = reward;
-
-                //     // ensure modal is visible and reset any previous fade state
-                //     scratchModal.classList.remove('fade-out');
-                //     scratchModal.classList.add('active');
-
-
-                //     ctx.globalCompositeOperation = 'source-over';
-                //     ctx.fillStyle = '#9ca3af';
-                //     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-
-                //     ctx.fillStyle = '#b45309';
-                //     ctx.font = 'bold 36px system-ui';
-                //     ctx.textAlign = 'center';
-                //     ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
-
-                //     // switch to erasing mode for user interactions
-                //     ctx.globalCompositeOperation = 'destination-out';
-
-                //     // reset flags + UI
-                //     rewardRevealed = false;
-                //     scratchResult.textContent = '…';
-                // }
-
-
-                let drawing = false;
-                let rewardRevealed = false;
-
-                function scratchDraw(x, y) {
-                    if (rewardRevealed) return; // stop scratching logic once revealed
-
-                    ctx.beginPath();
-                    ctx.arc(x, y, 24, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    checkScratchProgress();
-                }
-
-                function checkScratchProgress() {
-                    if (rewardRevealed) return; // already done
-
-                    const imageData = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
-                    let cleared = 0;
-                    for (let i = 3; i < imageData.data.length; i += 4) { // check alpha channel
-                        if (imageData.data[i] === 0) cleared++;
-                    }
-                    const total = scratchCanvas.width * scratchCanvas.height;
-                    const percent = cleared / total;
-
-                    if (percent > 0.3) { // 30% scratched
-                        rewardRevealed = true;
-                        revealReward();
-                    }
-                }
-
-                function openScratch(reward) {
-                    currentReward = reward;
-                    scratchModal.classList.add('active');
-
-                    // reset canvas
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.fillStyle = '#9ca3af';
-                    ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-
-                    ctx.fillStyle = '#b45309';
-                    ctx.font = 'bold 36px system-ui';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
-
-                    // switch to erasing
-                    ctx.globalCompositeOperation = 'destination-out';
-
-                    rewardRevealed = false; // reset flag
-                    scratchResult.textContent = '…';
-                }
-
-
-                function canvasPos(e) { const r = scratchCanvas.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left; const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top; return { x: x * (scratchCanvas.width / r.width), y: y * (scratchCanvas.height / r.height) }; }
-
-                scratchCanvas.addEventListener('pointerdown', (e) => { drawing = true; const p = canvasPos(e); scratchDraw(p.x, p.y); });
-                scratchCanvas.addEventListener('pointermove', (e) => { if (!drawing) return; const p = canvasPos(e); scratchDraw(p.x, p.y); });
-                window.addEventListener('pointerup', () => drawing = false);
-
-                function revealReward() {
-                    if (!currentReward) return;
-                    const [type, val] = currentReward.split(':');
-                    const num = +val;
-
-                    if (type === 'points') {
-                        state.points += num;
-                        scratchResult.textContent = `You won +${num} points!`;
-                    } else if (type === 'cashback') {
-                        state.cashback += num;
-                        scratchResult.textContent = `You won +RM ${num} cashback!`;
-                    } else if (type === 'voucher') {
-                        state.vouchers += num;
-                        scratchResult.textContent = `You won +${num} voucher!`;
-                    }
-
-                    // 🔥 Update immediately
-                    sync();
-
-                    // Show toast
-                    showToast(scratchResult.textContent);
-
-                    // Allow user to *see* the reward for ~2s, then fade overlay
-                    setTimeout(() => {
-                        scratchModal.classList.add('fade-out');
-
-                        // After transition ends, fully hide and reset
-                        setTimeout(() => {
-                            scratchModal.classList.remove('active', 'fade-out');
-                            ctx.globalCompositeOperation = 'source-over';
-                            ctx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-                        }, 500); // match CSS transition time
-                    }, 1400);
-                }
-
-
-                document.querySelectorAll('.scratch').forEach(card => {
-                    card.addEventListener('click', () => openScratch(card.dataset.reward));
-                });
-                closeScratch.addEventListener('click', () => {
-                    // if user closes early, we should also stop further rewarding
-                    rewardRevealed = true;
-                    closeScratchModalAnimated();
-                });
-
-                function closeScratchModalAnimated() {
-                    if (!scratchModal.classList.contains('active')) return;
-
-                    // add fade-out class (will animate because .modal has transition)
-                    scratchModal.classList.add('fade-out');
-
-                    // after transition ends, fully hide and reset modal for next open
-                    scratchModal.addEventListener('transitionend', function onEnd() {
-                        // remove classes so next open is clean
-                        scratchModal.classList.remove('active', 'fade-out');
-
-                        // optional: fully clear canvas so next open draws fresh overlay
-                        ctx.globalCompositeOperation = 'source-over';
-                        ctx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
-
-                        // remove this listener (we used a named fn to remove safely)
-                        scratchModal.removeEventListener('transitionend', onEnd);
-                    }, { once: true });
-                }
-
-                // Redeem now quick action
-                document.getElementById('redeemNow').addEventListener('click', () => {
-                    if (state.points >= 100) { state.points -= 100; state.vouchers += 1; sync(); showToast('Redeemed quick: +1 voucher for 100 pts'); }
-                    else showToast('Earn more points to redeem');
-                });
-
-                // Initial sync
+        function showToast(msg) {
+            let toast = document.getElementById('toast');
+            // If it's missing, create it so this never throws.
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.className = 'toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1800);
+        }
+        function fmtCurrency(v) { return 'IDR ' + v; }
+        function sync() {
+            console.log("Syncing state:", state);
+            elCash.textContent = fmtCurrency(state.cashback);
+            elPts.textContent = state.points;
+            elVch.textContent = state.vouchers;
+        }
+        // --- Redeem buttons ---
+        document.querySelectorAll('.redeem .cta').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cost = +btn.dataset.cost; const type = btn.dataset.type; const value = +btn.dataset.value;
+                if (state.points < cost) { showToast('Not enough points'); return; }
+                state.points -= cost;
+                if (type === 'voucher') state.vouchers += value;
                 sync();
-            </script>
-            <script>
-                const rewards = [
-                    { type: "points", value: 10, label: "+10 Points" },
-                    { type: "voucher", value: 1, label: "+1 Voucher" },
-                    { type: "cashback", value: 20, label: "RM 20 Cashback" },
-                    { type: "points", value: 50, label: "+50 Points" },
-                    { type: "cashback", value: 50, label: "RM 50 Cashback" },
-                    { type: "voucher", value: 2, label: "+2 Vouchers" },
-                ];
+                showToast('Redeemed! +' + value + ' voucher');
+            });
+        });
 
-                const canvas = document.getElementById("wheelCanvas");
-                const wheelRadius = canvas.width / 2;
-                const resultEl = document.getElementById("wheelResult");
-                const spinBtn = document.getElementById("spinBtn");
+        // --- Scratch cards ---
+        const scratchModal = document.getElementById('scratchModal');
+        const scratchCanvas = document.getElementById('scratchCanvas');
+        const ctx = scratchCanvas.getContext('2d');
+        const scratchResult = document.getElementById('scratchResult');
+        const closeScratch = document.getElementById('closeScratch');
 
-                let currentAngle = 0;
-                let spinning = false;
+        let currentReward = null;
 
-                const wheelOverlay = document.getElementById("wheelOverlay");
-                const openWheelCard = document.getElementById("openWheelCard");
-                const closeWheelBtn = document.getElementById("closeWheel");
+        // function openScratch(reward) {
 
-                // open overlay
-                document.getElementById("openWheelCard").addEventListener("click", () => {
-                    document.getElementById("wheelOverlay").style.display = "flex";
-                });
+        //     currentReward = reward;
 
-                // Close when clicking the "Close" button
-                closeWheelBtn.addEventListener("click", () => {
-                    wheelOverlay.style.display = "none";
-                });
+        //     // ensure modal is visible and reset any previous fade state
+        //     scratchModal.classList.remove('fade-out');
+        //     scratchModal.classList.add('active');
 
-                // Optional: Close if user clicks outside modal content
-                wheelOverlay.addEventListener("click", (e) => {
-                    if (e.target === wheelOverlay) {
-                        wheelOverlay.style.display = "none";
-                    }
-                });
 
-                function drawWheel(angle = 0) {
-                    const wheelCtx = canvas.getContext("2d");
-                    wheelCtx.clearRect(0, 0, canvas.width, canvas.height);
-                    wheelCtx.save();
-                    wheelCtx.translate(wheelRadius, wheelRadius);
-                    wheelCtx.rotate(angle);
-                    const n = rewards.length;
-                    const step = (2 * Math.PI) / n;
+        //     ctx.globalCompositeOperation = 'source-over';
+        //     ctx.fillStyle = '#9ca3af';
+        //     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-                    rewards.forEach((reward, i) => {
-                        // draw slice
-                        wheelCtx.beginPath();
-                        wheelCtx.moveTo(0, 0);
-                        wheelCtx.arc(0, 0, wheelRadius, i * step, (i + 1) * step);
-                        wheelCtx.closePath();
-                        wheelCtx.fillStyle = `hsl(${(i * 60) % 360}, 80%, 70%)`;
-                        wheelCtx.fill();
-                        wheelCtx.stroke();
+        //     ctx.fillStyle = '#b45309';
+        //     ctx.font = 'bold 36px system-ui';
+        //     ctx.textAlign = 'center';
+        //     ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
 
-                        // draw label
-                        wheelCtx.save();
-                        wheelCtx.rotate(i * step + step / 2);
-                        wheelCtx.textAlign = "right";
-                        wheelCtx.fillStyle = "#000";
-                        wheelCtx.font = "14px Arial";
-                        wheelCtx.fillText(reward.label, wheelRadius - 10, 5);
-                        wheelCtx.restore();
-                    });
+        //     // switch to erasing mode for user interactions
+        //     ctx.globalCompositeOperation = 'destination-out';
 
-                    wheelCtx.restore();
-                }
-                drawWheel();
+        //     // reset flags + UI
+        //     rewardRevealed = false;
+        //     scratchResult.textContent = '…';
+        // }
 
-                function spinWheel() {
-                    if (spinning) return;
-                    spinning = true;
 
-                    const spins = 5; // full rotations
-                    const sliceAngle = (2 * Math.PI) / rewards.length;
-                    const chosen = Math.floor(Math.random() * rewards.length);
-                    const finalAngle = (2 * Math.PI * spins) + (sliceAngle * chosen + sliceAngle / 2);
+        let drawing = false;
+        let rewardRevealed = false;
 
-                    let start = null;
-                    const duration = 4000;
+        function scratchDraw(x, y) {
+            if (rewardRevealed) return; // stop scratching logic once revealed
 
-                    function animate(ts) {
-                        if (!start) start = ts;
-                        const progress = Math.min((ts - start) / duration, 1);
-                        const eased = 1 - Math.pow(1 - progress, 3); // ease out cubic
-                        const angle = currentAngle + eased * (finalAngle - currentAngle);
-                        drawWheel(angle);
+            ctx.beginPath();
+            ctx.arc(x, y, 24, 0, Math.PI * 2);
+            ctx.fill();
 
-                        if (progress < 1) {
-                            requestAnimationFrame(animate);
-                        } else {
-                            currentAngle = finalAngle % (2 * Math.PI);
-                            const won = rewards[rewards.length - 1 - chosen]; // clockwise correction
-                            resultEl.textContent = `You won ${won.label}! 🎉`;
+            checkScratchProgress();
+        }
 
-                            // apply reward to state
-                            if (won.type === "points") state.points += won.value;
-                            if (won.type === "cashback") state.cashback += won.value;
-                            if (won.type === "voucher") state.vouchers += won.value;
+        function checkScratchProgress() {
+            if (rewardRevealed) return; // already done
 
-                            // sync UI + toast
-                            sync();
-                            showToast(`+${won.value} ${won.type}`);
+            const imageData = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+            let cleared = 0;
+            for (let i = 3; i < imageData.data.length; i += 4) { // check alpha channel
+                if (imageData.data[i] === 0) cleared++;
+            }
+            const total = scratchCanvas.width * scratchCanvas.height;
+            const percent = cleared / total;
 
-                            spinning = false;
+            if (percent > 0.3) { // 30% scratched
+                rewardRevealed = true;
+                revealReward();
+            }
+        }
 
-                        }
-                    }
+        function openScratch(reward) {
+            currentReward = reward;
+            scratchModal.classList.add('active');
+
+            // reset canvas
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = '#9ca3af';
+            ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+            ctx.fillStyle = '#b45309';
+            ctx.font = 'bold 36px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
+
+            // switch to erasing
+            ctx.globalCompositeOperation = 'destination-out';
+
+            rewardRevealed = false; // reset flag
+            scratchResult.textContent = '…';
+        }
+
+
+        function canvasPos(e) { const r = scratchCanvas.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left; const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top; return { x: x * (scratchCanvas.width / r.width), y: y * (scratchCanvas.height / r.height) }; }
+
+        scratchCanvas.addEventListener('pointerdown', (e) => { drawing = true; const p = canvasPos(e); scratchDraw(p.x, p.y); });
+        scratchCanvas.addEventListener('pointermove', (e) => { if (!drawing) return; const p = canvasPos(e); scratchDraw(p.x, p.y); });
+        window.addEventListener('pointerup', () => drawing = false);
+
+        function revealReward() {
+            if (!currentReward) return;
+            const [type, val] = currentReward.split(':');
+            const num = +val;
+
+            if (type === 'points') {
+                state.points += num;
+                scratchResult.textContent = `You won +${num} points!`;
+            } else if (type === 'cashback') {
+                state.cashback += num;
+                scratchResult.textContent = `You won +IDR ${num} cashback!`;
+            } else if (type === 'voucher') {
+                state.vouchers += num;
+                scratchResult.textContent = `You won +${num} voucher!`;
+            }
+
+            // 🔥 Update immediately
+            sync();
+
+            // Show toast
+            showToast(scratchResult.textContent);
+
+            // Allow user to *see* the reward for ~2s, then fade overlay
+            setTimeout(() => {
+                scratchModal.classList.add('fade-out');
+
+                // After transition ends, fully hide and reset
+                setTimeout(() => {
+                    scratchModal.classList.remove('active', 'fade-out');
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+                }, 500); // match CSS transition time
+            }, 1400);
+        }
+
+
+        document.querySelectorAll('.scratch').forEach(card => {
+            card.addEventListener('click', () => openScratch(card.dataset.reward));
+        });
+        closeScratch.addEventListener('click', () => {
+            // if user closes early, we should also stop further rewarding
+            rewardRevealed = true;
+            closeScratchModalAnimated();
+        });
+
+        function closeScratchModalAnimated() {
+            if (!scratchModal.classList.contains('active')) return;
+
+            // add fade-out class (will animate because .modal has transition)
+            scratchModal.classList.add('fade-out');
+
+            // after transition ends, fully hide and reset modal for next open
+            scratchModal.addEventListener('transitionend', function onEnd() {
+                // remove classes so next open is clean
+                scratchModal.classList.remove('active', 'fade-out');
+
+                // optional: fully clear canvas so next open draws fresh overlay
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+
+                // remove this listener (we used a named fn to remove safely)
+                scratchModal.removeEventListener('transitionend', onEnd);
+            }, { once: true });
+        }
+
+        // Redeem now quick action
+        document.getElementById('redeemNow').addEventListener('click', () => {
+            if (state.points >= 100) { state.points -= 100; state.vouchers += 1; sync(); showToast('Redeemed quick: +1 voucher for 100 pts'); }
+            else showToast('Earn more points to redeem');
+        });
+
+        // Initial sync
+        sync();
+    </script>
+    <script>
+        const rewards = [
+            { type: "points", value: 10, label: "+10 Points" },
+            { type: "voucher", value: 1, label: "+1 Voucher" },
+            { type: "cashback", value: 20, label: "IDR 20 Cashback" },
+            { type: "points", value: 50, label: "+50 Points" },
+            { type: "cashback", value: 50, label: "IDR 50 Cashback" },
+            { type: "voucher", value: 2, label: "+2 Vouchers" },
+        ];
+
+        const canvas = document.getElementById("wheelCanvas");
+        const wheelRadius = canvas.width / 2;
+        const resultEl = document.getElementById("wheelResult");
+        const spinBtn = document.getElementById("spinBtn");
+
+        let currentAngle = 0;
+        let spinning = false;
+
+        const wheelOverlay = document.getElementById("wheelOverlay");
+        const openWheelCard = document.getElementById("openWheelCard");
+        const closeWheelBtn = document.getElementById("closeWheel");
+
+        // open overlay
+        document.getElementById("openWheelCard").addEventListener("click", () => {
+            document.getElementById("wheelOverlay").style.display = "flex";
+        });
+
+        // Close when clicking the "Close" button
+        closeWheelBtn.addEventListener("click", () => {
+            wheelOverlay.style.display = "none";
+        });
+
+        // Optional: Close if user clicks outside modal content
+        wheelOverlay.addEventListener("click", (e) => {
+            if (e.target === wheelOverlay) {
+                wheelOverlay.style.display = "none";
+            }
+        });
+
+        function drawWheel(angle = 0) {
+            const wheelCtx = canvas.getContext("2d");
+            wheelCtx.clearRect(0, 0, canvas.width, canvas.height);
+            wheelCtx.save();
+            wheelCtx.translate(wheelRadius, wheelRadius);
+            wheelCtx.rotate(angle);
+            const n = rewards.length;
+            const step = (2 * Math.PI) / n;
+
+            rewards.forEach((reward, i) => {
+                // draw slice
+                wheelCtx.beginPath();
+                wheelCtx.moveTo(0, 0);
+                wheelCtx.arc(0, 0, wheelRadius, i * step, (i + 1) * step);
+                wheelCtx.closePath();
+                wheelCtx.fillStyle = `hsl(${(i * 60) % 360}, 80%, 70%)`;
+                wheelCtx.fill();
+                wheelCtx.stroke();
+
+                // draw label
+                wheelCtx.save();
+                wheelCtx.rotate(i * step + step / 2);
+                wheelCtx.textAlign = "right";
+                wheelCtx.fillStyle = "#000";
+                wheelCtx.font = "14px Arial";
+                wheelCtx.fillText(reward.label, wheelRadius - 10, 5);
+                wheelCtx.restore();
+            });
+
+            wheelCtx.restore();
+        }
+        drawWheel();
+
+        function spinWheel() {
+            if (spinning) return;
+            spinning = true;
+
+            const spins = 5; // full rotations
+            const sliceAngle = (2 * Math.PI) / rewards.length;
+            const chosen = Math.floor(Math.random() * rewards.length);
+            const finalAngle = (2 * Math.PI * spins) + (sliceAngle * chosen + sliceAngle / 2);
+
+            let start = null;
+            const duration = 4000;
+
+            function animate(ts) {
+                if (!start) start = ts;
+                const progress = Math.min((ts - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // ease out cubic
+                const angle = currentAngle + eased * (finalAngle - currentAngle);
+                drawWheel(angle);
+
+                if (progress < 1) {
                     requestAnimationFrame(animate);
+                } else {
+                    currentAngle = finalAngle % (2 * Math.PI);
+                    const won = rewards[rewards.length - 1 - chosen]; // clockwise correction
+                    resultEl.textContent = `You won ${won.label}! 🎉`;
+
+                    // apply reward to state
+                    if (won.type === "points") state.points += won.value;
+                    if (won.type === "cashback") state.cashback += won.value;
+                    if (won.type === "voucher") state.vouchers += won.value;
+
+                    // sync UI + toast
+                    sync();
+                    showToast(`+${won.value} ${won.type}`);
+
+                    spinning = false;
+
                 }
+            }
+            requestAnimationFrame(animate);
+        }
 
-                spinBtn.addEventListener("click", spinWheel);
+        spinBtn.addEventListener("click", spinWheel);
 
-            </script>
+    </script>
 
+    <script>
+        // 🔐 Hardcoded identity for this demo/user
+        // const USER_IDENTITY = "77777878";
+    </script>
+
+    <script>
+        const USER_IDENTITY = "77777879";
+        // Fetch wallet points and update the display
+        fetch(
+            `https://script.google.com/macros/s/AKfycbwMcBGBkTRlmSM3rMss9qESuEXCP0fNy92ndd9tYZyiVCpwX3orrJjTZE11u_QQ45Q_sA/exec?identity=${encodeURIComponent(USER_IDENTITY)}`
+        )
+            .then(r => r.json())
+            .then(data => {
+                console.log(data);
+                if (data.status === 'success' && data.records && data.records.length > 0) {
+                    // Get active points from the first wallet (Wallet-1)
+                    const activePoints = data.records[0].activePoints || 0;
+
+                    // Update the amount display
+                    const amountElement = document.querySelector('.hero .amount');
+                    if (amountElement) {
+                        amountElement.textContent = `IDR ${activePoints.toLocaleString()}`;
+                    }
+
+                    // Optional: show a toast notification
+                    showToast(`Wallet synced: IDR ${activePoints} available`);
+                }
+            })
+            .catch(err => {
+                console.error('Error fetching wallet data:', err);
+                showToast('Could not sync wallet data');
+            });
+    </script>
 </body>
 
 </html>

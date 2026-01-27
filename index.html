@@ -183,14 +183,41 @@
         }
 
         .hero .amount {
-            font-size: 48px;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ff7a00, #ffb703);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1;
-        }
+    font-size: 48px;
+    font-weight: 900;
+
+    /* Layer 1 = shimmer highlight, Layer 2 = gold gradient */
+    background:
+        linear-gradient(
+            120deg,
+           rgba(255, 255, 255, 0) 35%,
+    rgba(255, 245, 200, 0.9) 45%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 210, 120, 0.9) 55%,
+    rgba(255, 255, 255, 0) 65%
+        ),
+        linear-gradient(45deg, #ff7a00, #ffb703);
+
+    background-size: 200% 100%, 100% 100%;
+    background-position: -200% 0, 0 0;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+}
+
+.hero .amount.loading {
+    animation: shineSweep 1.2s linear infinite;
+}
+
+@keyframes shineSweep {
+    to {
+        background-position: 200% 0, 0 0;
+    }
+}
+
+
 
         .hero .sub {
             color: #173569;
@@ -601,7 +628,7 @@
         }
 
         .toast.show {
-            opacity: 1;
+            opacity: .9;
             transform: translateX(-50%) translateY(0);
         }
 
@@ -777,6 +804,29 @@
     color: #4b648f;
 }
 
+
+.coin-loading {
+    background: linear-gradient(
+        90deg,
+        #cfdcff 0%,
+        #ffffff 20%,
+        #cfdcff 40%,
+        #ffffff 60%,
+        #cfdcff 80%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: coinShimmer 1.1s infinite linear;
+}
+
+@keyframes coinShimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+}
+
+
     </style>
 </head>
 
@@ -930,6 +980,11 @@
     const voucherStat = document.getElementById('vouchers');
     const elAmount = document.querySelector('.hero .amount');
     const closeVoucherTray = document.getElementById('closeVoucherTray');
+    elAmount.classList.add('coin-loading');
+    elAmount.textContent = "IDR ..";
+
+    
+
 
     let startY = 0;
     let currentY = 0;
@@ -988,6 +1043,7 @@
         // const elPts = document.getElementById('points');
         const elVch = document.getElementById('vouchers');
         const toast = document.getElementById('toast');
+        
 
         function showToast(msg) {
             let toast = document.getElementById('toast');
@@ -1036,6 +1092,7 @@
         const ctx = scratchCanvas.getContext('2d');
         const scratchResult = document.getElementById('scratchResult');
         const closeScratch = document.getElementById('closeScratch');
+        
 
         let currentReward = null;
 
@@ -1171,7 +1228,7 @@
         // Initial sync
         sync();
     </script>
-    
+
     <script>
         const rewards = [
             { type: "coins", value: 10, label: "+10 Coins" },
@@ -1300,6 +1357,9 @@
                     // Get active points from the first wallet (Wallet-1)
                     const activePoints = data.records[0].activePoints || 0;
                     state.coins = activePoints;
+                    elAmount.classList.remove('coin-loading');
+                    
+
                     sync();
                     
                     // Update the amount display
@@ -1314,6 +1374,7 @@
             })
             .catch(err => {
                 console.error('Error fetching wallet data:', err);
+                elAmount.classList.remove('coin-loading');
                 showToast('Could not sync wallet data');
             });
     </script>

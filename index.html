@@ -22,6 +22,10 @@
             --green: #22c55e;
             --pink: #f472b6;
             --blue: #60a5fa;
+            --reward-blue-1: #e7f0ff;
+            --reward-blue-2: #9fc3ff;
+            --reward-blue-3: #4c8dff;
+            --reward-blue-4: #1a5cff;
         }
 
         * {
@@ -183,39 +187,37 @@
         }
 
         .hero .amount {
-    font-size: 48px;
-    font-weight: 900;
+            font-size: 48px;
+            font-weight: 900;
 
-    /* Layer 1 = shimmer highlight, Layer 2 = gold gradient */
-    background:
-        linear-gradient(
-            120deg,
-           rgba(255, 255, 255, 0) 35%,
-    rgba(255, 245, 200, 0.9) 45%,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 210, 120, 0.9) 55%,
-    rgba(255, 255, 255, 0) 65%
-        ),
-        linear-gradient(45deg, #ff7a00, #ffb703);
+            /* Layer 1 = shimmer highlight, Layer 2 = gold gradient */
+            background:
+                linear-gradient(120deg,
+                    rgba(255, 255, 255, 0) 35%,
+                    rgba(255, 255, 255, 0.9) 45%,
+                    rgba(255, 255, 255, 1) 50%,
+                    rgba(170, 200, 255, 0.6) 55%,
+                    rgba(255, 255, 255, 0) 65%),
+                linear-gradient(45deg, var(--reward-blue-3), var(--reward-blue-4));
 
-    background-size: 200% 100%, 100% 100%;
-    background-position: -200% 0, 0 0;
+            background-size: 200% 100%, 100% 100%;
+            background-position: -200% 0, 0 0;
 
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    line-height: 1;
-}
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
 
-.hero .amount.loading {
-    animation: shineSweep 1.2s linear infinite;
-}
+        .hero .amount.loading {
+            animation: shineSweep 1.2s linear infinite;
+        }
 
-@keyframes shineSweep {
-    to {
-        background-position: 200% 0, 0 0;
-    }
-}
+        @keyframes shineSweep {
+            to {
+                background-position: 200% 0, 0 0;
+            }
+        }
 
 
 
@@ -350,17 +352,23 @@
 
         .pointer {
             position: absolute;
-            top: -20px;
-            /* move arrow above */
+            top: -8px;
             left: 50%;
             transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 18px solid transparent;
-            border-right: 18px solid transparent;
-            border-bottom: 36px solid red;
-            /* arrow shape */
+            width: 26px;
+            height: 18px;
         }
+
+        .pointer::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #4c8dff, #1a5cff);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            border-radius: 2px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        }
+
 
         .wheel {
             width: 250px;
@@ -386,7 +394,7 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: #0d2b7a;
+            background: var(--reward-blue-4);
             display: grid;
             place-items: center;
             color: #fff;
@@ -417,11 +425,12 @@
 
         .wheel-wrapper {
             position: relative;
-            width: 300px;
-            height: 220px;
-            /* extra height for arrow */
-            margin: 0 auto;
+            width: 100%;
+            height: 320px;
+            /* make square */
+            margin: 0 auto 10px;
         }
+
 
         #wheelResult {
             margin-top: 15px;
@@ -446,13 +455,19 @@
         }
 
         #wheelCanvas {
+            width: 300px;
+            height: 300px;
             display: block;
-            margin: 0 auto;
+            margin: 0 auto 20px auto;
+            border: 3px solid #ffffff;
+            /* slim + white */
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            /* soft depth instead of dark ring */
             border-radius: 50%;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
         }
 
-        .pointer {
+
+        /* .pointer {
             position: absolute;
             top: -10px;
             left: 50%;
@@ -462,7 +477,7 @@
             border-left: 12px solid transparent;
             border-right: 12px solid transparent;
             border-bottom: 20px solid red;
-        }
+        } */
 
         .button-row {
             display: flex;
@@ -474,23 +489,35 @@
         }
 
         .spin-btn {
-            background: #ffb400;
-            color: #000;
+            background: linear-gradient(90deg, var(--reward-blue-3), var(--reward-blue-4));
+            color: #fff;
             font-weight: bold;
             padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0 8px 18px rgba(26, 92, 255, 0.35);
             cursor: pointer;
         }
 
+
         .close-btn {
-            background: #e0e0e0;
-            color: #000;
+            background: #eef3ff;
+            color: var(--reward-blue-4);
             font-weight: bold;
             padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
             cursor: pointer;
+        }
+
+        .spin-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 22px rgba(26, 92, 255, 0.45);
+        }
+
+        .close-btn:hover {
+            background: #dce6ff;
         }
 
         /* Redeem grid */
@@ -585,6 +612,60 @@
             box-shadow: 0 20px 60px #000c;
         }
 
+
+        .scratch-area {
+            position: relative;
+            height: 200px;
+        }
+
+        #scratchResult {
+            display: none;
+        }
+
+        .reward-bg {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            background: radial-gradient(circle at 30% 30%, var(--reward-blue-1), var(--reward-blue-3), var(--reward-blue-4));
+            color: #ffffff;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            animation: rewardPop 0.5s ease;
+        }
+
+        @keyframes rewardPop {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+
+        #scratchCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        #scratchCanvas.reveal {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+
+
         canvas {
             border-radius: 12px;
             display: block;
@@ -598,7 +679,8 @@
             padding: 10px;
             border-radius: 10px;
             border: none;
-            background: #ff7a00;
+            background: linear-gradient(90deg, var(--reward-blue-3), var(--reward-blue-4));
+            color: white;
             font-weight: 900;
             cursor: pointer;
         }
@@ -669,16 +751,16 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
-        #wheelCanvas {
+        /* #wheelCanvas {
             display: block;
             margin: 0 auto 20px auto;
             border-radius: 50%;
             border: 5px solid #444;
             /* thinner border */
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
         }
 
-        #wheelResult {
+        */ #wheelResult {
             margin-top: 15px;
             font-weight: bold;
             font-size: 16px;
@@ -692,141 +774,142 @@
         }
 
         /* Voucher Tray */
-.voucher-tray {
-    position: absolute;
-    inset: auto 0 0 0;
-    height: 75%;
-    background: linear-gradient(180deg, #f9fbff, #eef4ff);
-    border-radius: 26px 26px 0 0;
-    box-shadow: 0 -20px 50px #00000025;
+        .voucher-tray {
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 75%;
+            background: linear-gradient(180deg, #f9fbff, #eef4ff);
+            border-radius: 26px 26px 0 0;
+            box-shadow: 0 -20px 50px #00000025;
 
-    /* 🔒 fully hidden until activated */
-    transform: translateY(110%);
-    opacity: 0;
-    pointer-events: none;
+            /* 🔒 fully hidden until activated */
+            transform: translateY(110%);
+            opacity: 0;
+            pointer-events: none;
 
-    transition:
-        transform 0.45s cubic-bezier(.2, .8, .2, 1),
-        opacity 0.3s ease;
+            transition:
+                transform 0.45s cubic-bezier(.2, .8, .2, 1),
+                opacity 0.3s ease;
 
-    z-index: 30;
-    display: flex;
-    flex-direction: column;
-    touch-action: none; /* important for gesture control */
-}
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            touch-action: none;
+            /* important for gesture control */
+        }
 
-.voucher-tray.active {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-}
+        .voucher-tray.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-/* grab handle */
-.voucher-handle {
-    width: 44px;
-    height: 5px;
-    background: #c7d6f3;
-    border-radius: 999px;
-    margin: 10px auto 6px;
-}
-
-
-.voucher-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 18px;
-    font-weight: 900;
-    color: #102a57;
-    font-size: 16px;
-}
-
-.voucher-header button {
-    border: none;
-    background: #e3ecff;
-    border-radius: 10px;
-    padding: 4px 10px;
-    cursor: pointer;
-    font-weight: 900;
-}
-
-.voucher-list {
-    padding: 12px;
-    display: grid;
-    gap: 12px;
-    overflow-y: auto;
-}
-
-.voucher-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 14px;
-    border: 1px solid #e3ebff;
-    box-shadow: 0 8px 16px #0000000d;
-}
-
-.voucher-card.blue {
-    background: linear-gradient(135deg, #e7f0ff, #f5f9ff);
-}
-
-.voucher-card.green {
-    background: linear-gradient(135deg, #e6fff4, #f3fff9);
-}
-
-.voucher-value {
-    min-width: 72px;
-    height: 72px;
-    border-radius: 14px;
-    display: grid;
-    place-items: center;
-    font-weight: 900;
-    font-size: 18px;
-    background: linear-gradient(45deg, #ff7a00, #ffb703);
-    color: #1b1400;
-}
-
-.voucher-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.voucher-title {
-    font-weight: 900;
-    color: #0e2356;
-}
-
-.voucher-expiry {
-    font-size: 12px;
-    color: #4b648f;
-}
+        /* grab handle */
+        .voucher-handle {
+            width: 44px;
+            height: 5px;
+            background: #c7d6f3;
+            border-radius: 999px;
+            margin: 10px auto 6px;
+        }
 
 
-.coin-loading {
-    background: linear-gradient(
-        90deg,
-        #cfdcff 0%,
-        #ffffff 20%,
-        #cfdcff 40%,
-        #ffffff 60%,
-        #cfdcff 80%
-    );
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: coinShimmer 1.1s infinite linear;
-}
+        .voucher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            font-weight: 900;
+            color: #102a57;
+            font-size: 16px;
+        }
 
-@keyframes coinShimmer {
-    from { background-position: 200% 0; }
-    to { background-position: -200% 0; }
-}
+        .voucher-header button {
+            border: none;
+            background: #e3ecff;
+            border-radius: 10px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-weight: 900;
+        }
+
+        .voucher-list {
+            padding: 12px;
+            display: grid;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .voucher-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 14px;
+            border: 1px solid #e3ebff;
+            box-shadow: 0 8px 16px #0000000d;
+        }
+
+        .voucher-card.blue {
+            background: linear-gradient(135deg, #e7f0ff, #f5f9ff);
+        }
+
+        .voucher-card.green {
+            background: linear-gradient(135deg, #e6fff4, #f3fff9);
+        }
+
+        .voucher-value {
+            min-width: 72px;
+            height: 72px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #1b1400;
+        }
+
+        .voucher-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .voucher-title {
+            font-weight: 900;
+            color: #0e2356;
+        }
+
+        .voucher-expiry {
+            font-size: 12px;
+            color: #4b648f;
+        }
 
 
+        .coin-loading {
+            background: linear-gradient(90deg,
+                    #cfdcff 0%,
+                    #ffffff 20%,
+                    #cfdcff 40%,
+                    #ffffff 60%,
+                    #cfdcff 80%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: coinShimmer 1.1s infinite linear;
+        }
+
+        @keyframes coinShimmer {
+            from {
+                background-position: 200% 0;
+            }
+
+            to {
+                background-position: -200% 0;
+            }
+        }
     </style>
 </head>
 
@@ -868,14 +951,14 @@
 
                     <div class="section-title">SCRATCH & CLAIM YOUR REWARDS</div>
                     <div class="scroll-row">
+                        <div class="card" id="openWheelCard">
+                            <span class="title">🎡 Spin the Wheel</span>
+                        </div>
                         <div class="card scratch" data-reward="coins:50">
                             <span class="title">SCRATCH CARD</span>
                         </div>
                         <div class="card scratch" data-reward="cashback:20">
                             <span class="title">SCRATCH CARD</span>
-                        </div>
-                        <div class="card" id="openWheelCard">
-                            <span class="title">🎡 Spin the Wheel</span>
                         </div>
                         <div class="card scratch" data-reward="voucher:1">
                             <span class="title">SCRATCH CARD</span>
@@ -915,7 +998,11 @@
                 <div class="scratch-wrap">
                     <div style="font-weight:900; margin-bottom:10px">Scratch to reveal your reward</div>
                     <div id="scratchResult" style="margin-bottom:10px; opacity:.8">…</div>
-                    <canvas id="scratchCanvas" width="600" height="360"></canvas>
+                    <div class="scratch-area">
+
+                        <div class="reward-bg" id="rewardBg"></div>
+                        <canvas id="scratchCanvas" width="600" height="360"></canvas>
+                    </div>
                     <button class="close" id="closeScratch">Close</button>
                 </div>
             </div>
@@ -975,67 +1062,67 @@
         </div>
     </div>
 
-<script>
-    const voucherTray = document.getElementById('voucherTray');
-    const voucherStat = document.getElementById('vouchers');
-    const elAmount = document.querySelector('.hero .amount');
-    const closeVoucherTray = document.getElementById('closeVoucherTray');
-    elAmount.classList.add('coin-loading');
-    elAmount.textContent = "IDR ..";
-
-    
+    <script>
+        const voucherTray = document.getElementById('voucherTray');
+        const voucherStat = document.getElementById('vouchers');
+        const elAmount = document.querySelector('.hero .amount');
+        const closeVoucherTray = document.getElementById('closeVoucherTray');
+        elAmount.classList.add('coin-loading');
+        elAmount.textContent = "IDR ..";
 
 
-    let startY = 0;
-    let currentY = 0;
-    let dragging = false;
 
-    // open tray
-    voucherStat.addEventListener('click', () => {
-        voucherTray.classList.add('active');
-        voucherTray.style.transform = 'translateY(0)';
-    });
 
-    // close via button
-    closeVoucherTray.addEventListener('click', closeTray);
+        let startY = 0;
+        let currentY = 0;
+        let dragging = false;
 
-    function closeTray() {
-        voucherTray.classList.remove('active');
-        voucherTray.style.transform = '';
-    }
-
-    // swipe handling
-    voucherTray.addEventListener('pointerdown', (e) => {
-        startY = e.clientY;
-        dragging = true;
-        voucherTray.setPointerCapture(e.pointerId);
-    });
-    voucherTray.addEventListener('pointermove', (e) => {
-        if (!dragging) return;
-
-        currentY = e.clientY - startY;
-
-        if (currentY > 0) {
-            voucherTray.style.transform = `translateY(${currentY}px)`;
-        }
-    });
-
-    voucherTray.addEventListener('pointerup', endDrag);
-    voucherTray.addEventListener('pointercancel', endDrag);
-
-    function endDrag() {
-        if (!dragging) return;
-        dragging = false;
-
-        // threshold to close
-        if (currentY > 120) {
-            closeTray();
-        } else {
+        // open tray
+        voucherStat.addEventListener('click', () => {
+            voucherTray.classList.add('active');
             voucherTray.style.transform = 'translateY(0)';
+        });
+
+        // close via button
+        closeVoucherTray.addEventListener('click', closeTray);
+
+        function closeTray() {
+            voucherTray.classList.remove('active');
+            voucherTray.style.transform = '';
         }
 
-        currentY = 0;
-    }
+        // swipe handling
+        voucherTray.addEventListener('pointerdown', (e) => {
+            startY = e.clientY;
+            dragging = true;
+            voucherTray.setPointerCapture(e.pointerId);
+        });
+        voucherTray.addEventListener('pointermove', (e) => {
+            if (!dragging) return;
+
+            currentY = e.clientY - startY;
+
+            if (currentY > 0) {
+                voucherTray.style.transform = `translateY(${currentY}px)`;
+            }
+        });
+
+        voucherTray.addEventListener('pointerup', endDrag);
+        voucherTray.addEventListener('pointercancel', endDrag);
+
+        function endDrag() {
+            if (!dragging) return;
+            dragging = false;
+
+            // threshold to close
+            if (currentY > 120) {
+                closeTray();
+            } else {
+                voucherTray.style.transform = 'translateY(0)';
+            }
+
+            currentY = 0;
+        }
 
         // --- Simple state ---
         const state = { cashback: 500, coins: 2000, vouchers: 41 };
@@ -1043,7 +1130,7 @@
         // const elPts = document.getElementById('points');
         const elVch = document.getElementById('vouchers');
         const toast = document.getElementById('toast');
-        
+
 
         function showToast(msg) {
             let toast = document.getElementById('toast');
@@ -1061,26 +1148,26 @@
         function fmtCurrency(v) { return 'IDR ' + v.toLocaleString(); }
 
         function sync() {
-                elCash.textContent = fmtCurrency(state.cashback);
-                elVch.textContent = state.vouchers;
+            elCash.textContent = fmtCurrency(state.cashback);
+            elVch.textContent = state.vouchers;
 
-                // 🔥 ALWAYS update wallet coins visually
-                if (elAmount) {
-                    elAmount.textContent = fmtCurrency(state.coins);
-                }
+            // 🔥 ALWAYS update wallet coins visually
+            if (elAmount) {
+                elAmount.textContent = fmtCurrency(state.coins);
             }
+        }
         // --- Redeem buttons ---
         document.querySelectorAll('.redeem .cta').forEach(btn => {
             btn.addEventListener('click', () => {
-                const cost = +btn.dataset.cost; 
+                const cost = +btn.dataset.cost;
                 // const type = btn.dataset.type; 
                 const value = +btn.dataset.value;
-                
+
                 if (state.coins < cost) { showToast('Not enough coins'); return; }
 
                 state.coins -= cost;
                 state.vouchers += value;
-                
+
                 sync();
                 showToast('Redeemed! +' + value + ' voucher');
             });
@@ -1092,7 +1179,7 @@
         const ctx = scratchCanvas.getContext('2d');
         const scratchResult = document.getElementById('scratchResult');
         const closeScratch = document.getElementById('closeScratch');
-        
+
 
         let currentReward = null;
 
@@ -1110,54 +1197,105 @@
         }
 
         function checkScratchProgress() {
-            if (rewardRevealed) return; // already done
+            if (rewardRevealed) return;
 
             const imageData = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
             let cleared = 0;
-            for (let i = 3; i < imageData.data.length; i += 4) { // check alpha channel
+
+            for (let i = 3; i < imageData.data.length; i += 4) {
                 if (imageData.data[i] === 0) cleared++;
             }
-            const total = scratchCanvas.width * scratchCanvas.height;
-            const percent = cleared / total;
 
-            if (percent > 0.3) { // 30% scratched
+            const percent = cleared / (scratchCanvas.width * scratchCanvas.height);
+
+            if (percent > 0.3) {
                 rewardRevealed = true;
+                scratchCanvas.classList.add("reveal"); // fade foil
                 revealReward();
             }
         }
+
 
         function openScratch(reward) {
             currentReward = reward;
             scratchModal.classList.add('active');
 
-            // reset canvas
+            const rewardBg = document.getElementById("rewardBg");
+            rewardBg.textContent = " ";
+
+            scratchCanvas.classList.remove("reveal");
+
             ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = '#9ca3af';
+
+            // Scratch foil matching SCRATCH CARD green
+            const gradient = ctx.createLinearGradient(
+                0,
+                0,
+                scratchCanvas.width,
+                scratchCanvas.height
+            );
+
+            gradient.addColorStop(0, '#d7f7e6');   // soft mint highlight
+            gradient.addColorStop(0.5, '#a6e5c6'); // mid tone
+            gradient.addColorStop(1, '#6ecf9f');   // deeper green
+
+
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-            ctx.fillStyle = '#b45309';
+            ctx.fillStyle = '#fff';
+
             ctx.font = 'bold 36px system-ui';
             ctx.textAlign = 'center';
             ctx.fillText('Scratch here ✦', scratchCanvas.width / 2, scratchCanvas.height / 2);
 
-            // switch to erasing
             ctx.globalCompositeOperation = 'destination-out';
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 40;
 
-            rewardRevealed = false; // reset flag
-            scratchResult.textContent = '…';
+            rewardRevealed = false;
+            scratchResult.textContent = ' ';
         }
+
 
 
         function canvasPos(e) { const r = scratchCanvas.getBoundingClientRect(); const x = (e.touches ? e.touches[0].clientX : e.clientX) - r.left; const y = (e.touches ? e.touches[0].clientY : e.clientY) - r.top; return { x: x * (scratchCanvas.width / r.width), y: y * (scratchCanvas.height / r.height) }; }
 
-        scratchCanvas.addEventListener('pointerdown', (e) => { drawing = true; const p = canvasPos(e); scratchDraw(p.x, p.y); });
-        scratchCanvas.addEventListener('pointermove', (e) => { if (!drawing) return; const p = canvasPos(e); scratchDraw(p.x, p.y); });
+        scratchCanvas.addEventListener('pointerdown', (e) => {
+            drawing = true;
+            const p = canvasPos(e);
+            lastX = p.x;
+            lastY = p.y;
+        });
+
+        scratchCanvas.addEventListener('pointermove', (e) => {
+            if (!drawing || rewardRevealed) return;
+
+            const p = canvasPos(e);
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+
+            lastX = p.x;
+            lastY = p.y;
+
+            checkScratchProgress();
+        });
+
         window.addEventListener('pointerup', () => drawing = false);
+
 
         function revealReward() {
             if (!currentReward) return;
             const [type, val] = currentReward.split(':');
             const num = +val;
+
+            // const rewardBg = document.getElementById("rewardBg");
+            // rewardBg.textContent = "✨ Scratch to reveal ✨";
+
 
             if (type === 'coins') {
                 state.coins += num;
@@ -1169,6 +1307,11 @@
                 state.vouchers += num;
                 scratchResult.textContent = `You won +${num} voucher!`;
             }
+
+            // 🔗 Sync reward panel text
+            const rewardBg = document.getElementById("rewardBg");
+            rewardBg.textContent = scratchResult.textContent;
+
 
             // 🔥 Update immediately
             sync();
@@ -1186,7 +1329,7 @@
                     ctx.globalCompositeOperation = 'source-over';
                     ctx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
                 }, 500); // match CSS transition time
-            }, 1400);
+            }, 5000);
         }
 
 
@@ -1269,46 +1412,82 @@
         });
 
         function drawWheel(angle = 0) {
-            const wheelCtx = canvas.getContext("2d");
-            wheelCtx.clearRect(0, 0, canvas.width, canvas.height);
-            wheelCtx.save();
-            wheelCtx.translate(wheelRadius, wheelRadius);
-            wheelCtx.rotate(angle);
+            const ctx = canvas.getContext("2d");
+            const dpr = window.devicePixelRatio || 1;
+
+            // Make canvas crisp
+            const size = 300;
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
+            canvas.style.width = size + "px";
+            canvas.style.height = size + "px";
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            const radius = size / 2;
+            ctx.clearRect(0, 0, size, size);
+
+            ctx.save();
+            ctx.translate(radius, radius);
+            ctx.rotate(angle);
+
             const n = rewards.length;
             const step = (2 * Math.PI) / n;
 
-            rewards.forEach((reward, i) => {
-                // draw slice
-                wheelCtx.beginPath();
-                wheelCtx.moveTo(0, 0);
-                wheelCtx.arc(0, 0, wheelRadius, i * step, (i + 1) * step);
-                wheelCtx.closePath();
-                wheelCtx.fillStyle = `hsl(${(i * 60) % 360}, 80%, 70%)`;
-                wheelCtx.fill();
-                wheelCtx.stroke();
+            // 🔵 Clean premium blue palette
+            const wheelColors = [
+                "#e7f0ff",
+                "#94bdff",
+                "#e7f0ff",
+                "#94bdff",
+                "#e7f0ff",
+                "#94bdff"
+            ];
 
-                // draw label
-                wheelCtx.save();
-                wheelCtx.rotate(i * step + step / 2);
-                wheelCtx.textAlign = "right";
-                wheelCtx.fillStyle = "#000";
-                wheelCtx.font = "14px Arial";
-                wheelCtx.fillText(reward.label, wheelRadius - 10, 5);
-                wheelCtx.restore();
+            rewards.forEach((reward, i) => {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, i * step, (i + 1) * step);
+                ctx.closePath();
+                ctx.fillStyle = wheelColors[i % wheelColors.length];
+                ctx.fill();
+
+                // Divider lines
+                ctx.strokeStyle = "rgba(0,0,0,0.08)";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Text
+                ctx.save();
+                ctx.rotate(i * step + step / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#0e224b";
+                ctx.font = "bold 14px system-ui";
+                ctx.fillText(reward.label, radius - 16, 5);
+                ctx.restore();
             });
 
-            wheelCtx.restore();
+            // Center hub
+            ctx.beginPath();
+            ctx.arc(0, 0, 10, 0, Math.PI * 2);   // smaller hub
+            ctx.fillStyle = "rgba(255,255,255,0.9)";
+            ctx.fill();
+
+            ctx.restore();
         }
+
         drawWheel();
 
         function spinWheel() {
             if (spinning) return;
             spinning = true;
 
-            const spins = 5; // full rotations
-            const sliceAngle = (2 * Math.PI) / rewards.length;
-            const chosen = Math.floor(Math.random() * rewards.length);
-            const finalAngle = (2 * Math.PI * spins) + (sliceAngle * chosen + sliceAngle / 2);
+            const n = rewards.length;
+            const sliceAngle = (2 * Math.PI) / n;
+            const spins = 5;
+
+            // random stop angle
+            const randomOffset = Math.random() * 2 * Math.PI;
+            const finalAngle = currentAngle + (2 * Math.PI * spins) + randomOffset;
 
             let start = null;
             const duration = 4000;
@@ -1316,7 +1495,8 @@
             function animate(ts) {
                 if (!start) start = ts;
                 const progress = Math.min((ts - start) / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3); // ease out cubic
+                const eased = 1 - Math.pow(1 - progress, 3);
+
                 const angle = currentAngle + eased * (finalAngle - currentAngle);
                 drawWheel(angle);
 
@@ -1324,24 +1504,32 @@
                     requestAnimationFrame(animate);
                 } else {
                     currentAngle = finalAngle % (2 * Math.PI);
-                    const won = rewards[rewards.length - 1 - chosen]; // clockwise correction
+
+                    // 🧠 FIGURE OUT WHICH SLICE IS UNDER ARROW
+                    const arrowAngle = -Math.PI / 2; // arrow at top
+                    let adjustedAngle = (arrowAngle - currentAngle) % (2 * Math.PI);
+                    if (adjustedAngle < 0) adjustedAngle += 2 * Math.PI;
+
+                    const index = Math.floor(adjustedAngle / sliceAngle);
+                    const won = rewards[index];
+
                     resultEl.textContent = `You won ${won.label}! 🎉`;
 
-                    // apply reward to state
                     if (won.type === "coins") state.coins += won.value;
                     if (won.type === "cashback") state.cashback += won.value;
                     if (won.type === "voucher") state.vouchers += won.value;
 
-                    // sync UI + toast
                     sync();
-                    showToast(`+${won.value} ${won.type}`);
+                    showToast(won.label);
 
                     spinning = false;
-
                 }
             }
             requestAnimationFrame(animate);
         }
+
+
+
 
         spinBtn.addEventListener("click", spinWheel);
 
@@ -1358,10 +1546,10 @@
                     const activePoints = data.records[0].activePoints || 0;
                     state.coins = activePoints;
                     elAmount.classList.remove('coin-loading');
-                    
+
 
                     sync();
-                    
+
                     // Update the amount display
                     const amountElement = document.querySelector('.hero .amount');
                     if (amountElement) {

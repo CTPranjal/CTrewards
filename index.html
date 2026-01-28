@@ -1300,7 +1300,9 @@
             if (type === 'coins') {
                 state.coins += num;
                 scratchResult.textContent = `You won +${num} coins!`;
+                console.log("calling method");
                 sendPromoCredit(num);
+
             } else if (type === 'cashback') {
                 state.cashback += num;
                 scratchResult.textContent = `You won +IDR ${num} cashback!`;
@@ -1567,23 +1569,32 @@
                 showToast('Could not sync wallet data');
             });
 
-            async function sendPromoCredit(points) {
-//   const scratchValue = 50; // value from scratch card
+        async function sendPromoCredit(points) {
+            //   const scratchValue = 50; // value from scratch card
+            console.log("inside sendPromoCredit", points);
 
-fetch("https://script.google.com/macros/s/AKfycby1H86P5-sntDw1gqa1_nkMG9pcwAHSa6dkK-j0ZV9cgv4bN4btu_Ce2n97XNy42FR3/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      identity: USER_IDENTITY,
-      walletId: "1152",
-      description: "Scratch card reward",
-      points: points
-        })
-  });
+            const safePoints = Number(points);
 
-  
-//   console.log("Promo Credit Response:", data);
-}
+            if (!safePoints || isNaN(safePoints)) {
+                console.error("INVALID POINTS VALUE:", points);
+                return;
+            }
+
+            fetch("https://script.google.com/macros/s/AKfycbx8Z76p2E59RDsUH5UCW5-q6Z6s2d5UYt-a9NyDkaFiWFXxCaU0yI6tTaKRaNxWySc7/exec?identity=${encodeURIComponent(USER_IDENTITY)}&walletId=${walletId}", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    identity: USER_IDENTITY,
+                    walletId: "1152",
+                    description: "Scratch card reward",
+                    points: safePoints
+                })
+            });
+            const text = await res.text();
+            console.log("GAS RESPONSE:", text);
+
+            //   console.log("Promo Credit Response:", data);
+        }
     </script>
 </body>
 

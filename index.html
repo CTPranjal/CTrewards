@@ -951,11 +951,11 @@
 
                     <div class="section-title">SCRATCH & CLAIM YOUR REWARDS</div>
                     <div class="scroll-row">
-                        <div class="card" id="openWheelCard">
-                            <span class="title">🎡 Spin the Wheel</span>
-                        </div>
                         <div class="card scratch" data-reward="coins:50">
                             <span class="title">SCRATCH CARD</span>
+                        </div>
+                        <div class="card" id="openWheelCard">
+                            <span class="title">🎡 Spin the Wheel</span>
                         </div>
                         <div class="card scratch" data-reward="cashback:20">
                             <span class="title">SCRATCH CARD</span>
@@ -1125,7 +1125,7 @@
         }
 
         // --- Simple state ---
-        const state = { cashback: 500, coins: 2000, vouchers: 41 };
+        const state = { cashback: 500, coins: "..", vouchers: 41 };
         const elCash = document.getElementById('cashbackWon');
         // const elPts = document.getElementById('points');
         const elVch = document.getElementById('vouchers');
@@ -1300,6 +1300,7 @@
             if (type === 'coins') {
                 state.coins += num;
                 scratchResult.textContent = `You won +${num} coins!`;
+                sendPromoCredit(num);
             } else if (type === 'cashback') {
                 state.cashback += num;
                 scratchResult.textContent = `You won +IDR ${num} cashback!`;
@@ -1363,10 +1364,10 @@
         }
 
         // Redeem now quick action
-        document.getElementById('redeemNow').addEventListener('click', () => {
-            if (state.points >= 100) { state.points -= 100; state.vouchers += 1; sync(); showToast('Redeemed quick: +1 voucher for 100 pts'); }
-            else showToast('Earn more points to redeem');
-        });
+        // document.getElementById('redeemNow').addEventListener('click', () => {
+        //     if (state.points >= 100) { state.points -= 100; state.vouchers += 1; sync(); showToast('Redeemed quick: +1 voucher for 100 pts'); }
+        //     else showToast('Earn more points to redeem');
+        // });
 
         // Initial sync
         sync();
@@ -1565,6 +1566,24 @@
                 elAmount.classList.remove('coin-loading');
                 showToast('Could not sync wallet data');
             });
+
+            async function sendPromoCredit(points) {
+//   const scratchValue = 50; // value from scratch card
+
+fetch("https://script.google.com/macros/s/AKfycby1H86P5-sntDw1gqa1_nkMG9pcwAHSa6dkK-j0ZV9cgv4bN4btu_Ce2n97XNy42FR3/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      identity: USER_IDENTITY,
+      walletId: "1152",
+      description: "Scratch card reward",
+      points: points
+        })
+  });
+
+  
+//   console.log("Promo Credit Response:", data);
+}
     </script>
 </body>
 

@@ -756,11 +756,10 @@
             margin: 0 auto 20px auto;
             border-radius: 50%;
             border: 5px solid #444;
-            /* thinner border */
         box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-        }
+        } */
 
-        */ #wheelResult {
+        #wheelResult {
             margin-top: 15px;
             font-weight: bold;
             font-size: 16px;
@@ -886,6 +885,11 @@
             color: #4b648f;
         }
 
+        .plan .offer {
+            color: #16a34a;
+            font-weight: 700;
+            font-size: 12px;
+        }
 
         .coin-loading {
             background: linear-gradient(90deg,
@@ -949,6 +953,7 @@
                         </div>
                     </div>
 
+
                     <div class="section-title">SCRATCH & CLAIM YOUR REWARDS</div>
                     <div class="scroll-row">
                         <div class="card scratch" data-reward="coins:50">
@@ -963,6 +968,44 @@
                         <div class="card scratch" data-reward="voucher:1">
                             <span class="title">SCRATCH CARD</span>
                         </div>
+                    </div>
+
+                    <div class="section-title">MAKE A RECHARGE</div>
+                    <div class="redeem-grid">
+
+                        <!-- PLAN 1 -->
+                        <div class="redeem plan">
+                            <div class="title">SMART COMBO 299</div>
+                            <div class="desc">1.5GB/day • Unlimited Calls • 28 Days</div>
+                            <div class="offer">Get IDR 50 OFF using Coins</div>
+                            <button class="cta" data-type="recharge" data-price="299" data-discount="50" data-coins="50"
+                                data-plan="SMART COMBO 299">
+                                Apply Coins
+                            </button>
+                        </div>
+
+                        <!-- PLAN 2 -->
+                        <div class="redeem plan">
+                            <div class="title">DATA BOOSTER 199</div>
+                            <div class="desc">Extra 25GB • No Daily Limit • 30 Days</div>
+                            <div class="offer">Use Coins & Save IDR 30</div>
+                            <button class="cta" data-type="recharge" data-price="199" data-discount="30" data-coins="30"
+                                data-plan="DATA BOOSTER 199">
+                                Apply Coins
+                            </button>
+                        </div>
+
+                        <!-- PLAN 3 -->
+                        <div class="redeem plan">
+                            <div class="title">SUPER SAVER 2999</div>
+                            <div class="desc">2GB/day • Unlimited • OTT • 365 Days</div>
+                            <div class="offer">Mega Offer: IDR 200 OFF</div>
+                            <button class="cta" data-type="recharge" data-price="2999" data-discount="200"
+                                data-coins="200" data-plan="SUPER SAVER 2999">
+                                Apply Coins
+                            </button>
+                        </div>
+
                     </div>
 
                     <div class="section-title">REDEEM YOUR COINS</div>
@@ -988,8 +1031,11 @@
                     </div>
                     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+                    
+
+
                     <!-- <div class="section-title">PLAY & WIN</div> -->
-                    <!-- <div class="bottom-pad"></div> -->
+                    <div class="bottom-pad"></div>
                 </div>
             </div>
 
@@ -1059,6 +1105,105 @@
                 </div>
             </div>
 
+            <!-- Recharge Checkout Tray -->
+            <div class="voucher-tray" id="rechargeTray">
+                <div class="voucher-handle"></div>
+
+                <div class="voucher-header">
+                    <span>Confirm Recharge</span>
+                    <button id="closeRechargeTray">✕</button>
+                </div>
+
+                <div style="padding:18px; display:flex; flex-direction:column; gap:20px;">
+
+                    <!-- PLAN CARD -->
+                    <div style="
+      background: linear-gradient(180deg,#f7faff,#eef4ff);
+      border-radius:18px;
+      padding:18px;
+      box-shadow: 0 6px 18px #00000010;
+  ">
+                        <div style="font-weight:900; color:#0e2356; font-size:15px;">MOBILE TOP-UP</div>
+                        <div style="color:#5b74a8; font-weight:600;">Recharge Plan</div>
+                        <div id="planPrice" style="
+          font-size:34px;
+          font-weight:900;
+          margin-top:6px;
+          color:#0e2356;
+      ">IDR 10</div>
+                    </div>
+
+                    <!-- PRICE BREAKDOWN -->
+                    <div style="
+      background:#ffffff;
+      border-radius:18px;
+      padding:18px;
+      border:1px solid #e6edff;
+      box-shadow: 0 6px 18px #0000000d;
+  ">
+                        <div style="display:flex; justify-content:space-between; font-weight:600; color:#6c83b3;">
+                            <span>Plan Price</span>
+                            <span id="summaryPrice">IDR 10</span>
+                        </div>
+
+                        <div style="
+          display:flex;
+          justify-content:space-between;
+          margin-top:10px;
+          font-weight:700;
+          color:#16a34a;
+      ">
+                            <span>Coins Coupon Applied</span>
+                            <span id="couponValue">– IDR 10</span>
+                        </div>
+
+                        <div style="
+          height:1px;
+          background:#e6edff;
+          margin:14px 0;
+      "></div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+  <div style="font-size:13px; color:#6c83b3;">You Pay</div>
+<div id="finalPay" style="
+    font-size:28px;
+    font-weight:900;
+    color:#0e2356;
+    letter-spacing:0.5px;
+">
+    IDR --
+</div></div>
+
+                            <div style="
+              background:#eafff1;
+              color:#16a34a;
+              font-weight:800;
+              padding:8px 14px;
+              border-radius:12px;
+              font-size:13px;
+          ">
+                                FULLY COVERED
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONFIRM BUTTON -->
+                    <button class="primary" id="confirmRecharge" style="
+      font-size:16px;
+      padding:12px;
+      border-radius:14px;
+      box-shadow:0 10px 22px #ff7a0035;
+  ">
+                        Confirm Recharge
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
         </div>
     </div>
 
@@ -1124,6 +1269,67 @@
             currentY = 0;
         }
 
+        const rechargeTray = document.getElementById('rechargeTray');
+        const closeRechargeTray = document.getElementById('closeRechargeTray');
+        const confirmRechargeBtn = document.getElementById('confirmRecharge');
+
+        let pendingRecharge = null;
+
+        document.querySelectorAll('.cta[data-type="recharge"]').forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                const price = +btn.dataset.price;
+                const discount = +btn.dataset.discount;
+                const coinsNeeded = +btn.dataset.coins;
+                const plan = btn.dataset.plan;
+
+                if (state.coins < coinsNeeded) {
+                    showToast("Not enough coins to unlock offer");
+                    return;
+                }
+
+                pendingRecharge = { price, discount, coinsNeeded, plan };
+
+                document.getElementById("planPrice").textContent = `IDR ${price}`;
+                document.getElementById("summaryPrice").textContent = `IDR ${price}`;
+                document.getElementById("couponValue").textContent = `IDR ${discount}`;
+                document.querySelector("#rechargeTray .voucher-header span").textContent = plan;
+
+                const finalAmount = price - discount;
+document.getElementById("finalPay").textContent = `IDR ${finalAmount}`;
+                
+
+                rechargeTray.classList.add("active");
+            });
+        });
+
+
+        // CLOSE
+        closeRechargeTray.addEventListener("click", () => {
+            rechargeTray.classList.remove("active");
+        });
+
+        // CONFIRM PURCHASE
+        confirmRechargeBtn.addEventListener("click", () => {
+  if (!pendingRecharge) return;
+
+  const finalAmount = pendingRecharge.price - pendingRecharge.discount;
+
+  // Deduct coins
+  state.coins -= pendingRecharge.coinsNeeded;
+  sync();
+
+  rechargeTray.classList.remove("active");
+
+  showToast(`Recharge Successful! Paid IDR ${finalAmount}`);
+
+  pendingRecharge = null;
+});
+
+
+
+
+
         // --- Simple state ---
         const state = { cashback: 500, coins: "..", vouchers: 41 };
         const elCash = document.getElementById('cashbackWon');
@@ -1157,7 +1363,7 @@
             }
         }
         // --- Redeem buttons ---
-        document.querySelectorAll('.redeem .cta').forEach(btn => {
+        document.querySelectorAll('.cta[data-type="voucher"]').forEach(btn => {
             btn.addEventListener('click', () => {
                 const cost = +btn.dataset.cost;
                 // const type = btn.dataset.type; 

@@ -1847,7 +1847,8 @@
                 console.log(data);
                 if (data.status === 'success' && data.records && data.records.length > 0) {
                     // Get active points from the first wallet (Wallet-1)
-                    const activePoints = data.records[0].activePoints || 0;
+const wallet = data.records.find(w => w.walletName === 'Alive Wallet');
+const activePoints = wallet ? wallet.activePoints : 0;
                     state.coins = activePoints;
                     elAmount.classList.remove('coin-loading');
 

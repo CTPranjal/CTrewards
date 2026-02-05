@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XL Smart - Westlife Jakarta Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        xl: {
+                            blue: '#1A1A1A', // Changed to Midnight Black for Westlife Theme
+                            light: '#C5A059', // Changed to Westlife Gold
+                            green: '#C5A059', // Changed to Gold accent
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animations */
+        @keyframes slideDown { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        
+        /* Updated Background and Body */
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 800px at 20% 20%, #1a1a1a 0%, #0b0f1e 45%, #070a14 100%);
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            overflow: hidden;
+        }
+
+        /* Phone Frame */
+        .phone-container {
+            position: relative;
+            width: min(360px, 90vw);
+            height: 750px;
+            border-radius: 3rem;
+            background: linear-gradient(145deg, #1a1a1a, #0a0d18);
+            box-shadow:
+                0 30px 80px #0008,
+                inset 0 0 0 2px #2a2a2a,
+                inset 0 0 0 6px #0c0f1a,
+                inset 0 0 0 9px #1c2336;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .phone-container:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow:
+                0 40px 100px #000c,
+                inset 0 0 0 2px #333,
+                inset 0 0 0 6px #0c0f1a,
+                inset 0 0 0 9px #1c2336;
+        }
+
+        .inner-screen {
+            position: absolute;
+            inset: 10px;
+            background: #fdfaf5; /* Slight cream tint for luxury feel */
+            border-radius: 2.5rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-container">
+        
+        <div class="inner-screen">
+            
+            <div class="h-8 bg-xl-blue flex justify-between items-center px-6 text-xs font-medium z-20 select-none text-white">
+                <span>9:41</span>
+                <div class="flex gap-1.5">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                </div>
+            </div>
+
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-xl z-30"></div>
+
+            <div id="pushNotification" class="absolute top-2 left-2 right-2 bg-slate-900/95 backdrop-blur text-white p-3 rounded-2xl z-50 transform -translate-y-[150%] transition-transform duration-300 shadow-lg flex items-start gap-3 cursor-pointer" onclick="window.location.href='rewards.html'">
+                <div class="w-8 h-8 rounded-full bg-xl-green flex items-center justify-center shrink-0 text-xl-blue">
+                    <i class="fas fa-music text-xs"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between items-baseline">
+                        <h4 class="text-sm font-bold">Concert Alert</h4>
+                        <span class="text-[10px] text-gray-400">Now</span>
+                    </div>
+                    <p class="text-xs text-gray-200 mt-0.5">Welcome to Westlife Jakarta! Enjoy your 5GB Concert Bonus data.</p>
+                </div>
+            </div>
+
+            <div id="screenContent" class="flex-1 overflow-y-auto no-scrollbar relative bg-gray-50 pb-20">
+                
+                <div id="pageHome" class="block">
+                    
+                    <div class="bg-xl-blue text-white pt-6 pb-12 px-5 rounded-b-[2.5rem] relative z-10">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-white rounded flex items-center justify-center">
+                                    <span class="text-xl-blue font-bold text-xs tracking-tighter transform -skew-x-12">XL</span>
+                                </div>
+                                <div>
+                                    <h1 class="text-sm font-bold opacity-90">Enjoy the show,</h1>
+                                    <p class="text-lg font-bold leading-none">Budi Santoso</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="bg-xl-green text-black text-[8px] font-bold px-2 py-1 rounded-full animate-pulse">WESTLIFE MODE</span>
+                                <button class="relative p-2" onclick="switchPage('pageInbox')">
+                                    <i class="far fa-bell text-xl text-white"></i>
+                                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-xl-green rounded-full border-2 border-xl-blue"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white text-gray-800 rounded-2xl p-5 shadow-lg relative -mb-16">
+                            <div class="flex justify-between items-start mb-4 border-b border-gray-100 pb-4">
+                                <div>
+                                    <p class="text-xs text-gray-500 font-semibold uppercase tracking-wide">Main Balance</p>
+                                    <h2 class="text-2xl font-bold text-xl-blue">Rp 45.200</h2>
+                                    <p class="text-[10px] text-xl-green font-bold">Westlife Special Data Active</p>
+                                </div>
+                                <button class="bg-xl-green text-black px-4 py-2 rounded-lg text-xs font-bold shadow-md hover:bg-yellow-600 transition">
+                                    <i class="fas fa-plus-circle mr-1"></i> Top Up
+                                </button>
+                            </div>
+                            <div class="flex justify-between text-center">
+                                <div class="flex-1 border-r border-gray-100">
+                                    <p class="text-xs text-gray-400">Internet</p>
+                                    <p class="text-lg font-bold text-gray-800">12.5 <span class="text-xs">GB</span></p>
+                                </div>
+                                <div class="flex-1 border-r border-gray-100">
+                                    <p class="text-xs text-gray-400">Concert</p>
+                                    <p class="text-lg font-bold text-xl-green">5.0 <span class="text-xs">GB</span></p>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-400">Points</p>
+                                    <p class="text-lg font-bold text-gray-800">850</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="h-20"></div>
+
+                    <div class="px-4 pb-4 space-y-6">
+                        
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div onclick="window.location.href='rewards.html'" class="flex flex-col items-center gap-1 group cursor-pointer">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-50 text-xl-green flex items-center justify-center shadow-sm"><i class="fas fa-star"></i></div>
+                                <span class="text-[10px] font-bold text-xl-blue">Fan Zone</span>
+                            </div>
+                            <div onclick="showInterstitial()" class="flex flex-col items-center gap-1 group cursor-pointer">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-50 text-xl-green flex items-center justify-center shadow-sm"><i class="fas fa-camera"></i></div>
+                                <span class="text-[10px] font-bold text-gray-600">Moments</span>
+                            </div>
+                            <div onclick="showPushNotification()" class="flex flex-col items-center gap-1 group cursor-pointer">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-50 text-xl-green flex items-center justify-center shadow-sm"><i class="fas fa-map-marker-alt"></i></div>
+                                <span class="text-[10px] font-bold text-gray-600">Venue</span>
+                            </div>
+                            <div onclick="window.location.href='index.html'" class="flex flex-col items-center gap-1 group cursor-pointer">
+                                <div class="w-12 h-12 rounded-xl bg-yellow-50 text-xl-green flex items-center justify-center shadow-sm"><i class="fas fa-ellipsis-h"></i></div>
+                                <span class="text-[10px] font-medium text-gray-600">More</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-xl-blue to-gray-800 rounded-2xl p-5 text-white shadow-xl relative overflow-hidden group">
+                            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-xl-green opacity-20 rounded-full blur-2xl"></div>
+                            <div class="relative z-10">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-[10px] font-bold bg-xl-green px-2 py-0.5 rounded text-black tracking-wide uppercase">Limited Offer</span>
+                                </div>
+                                <h3 class="text-lg font-bold mb-1">Westlife: The Wild Dreams Tour</h3>
+                                <p class="text-xs text-gray-300 mb-3 w-3/4">Special 5G speed boost for fans at the venue. Enjoy seamless streaming!</p>
+                                <button class="bg-xl-green text-black text-xs font-bold px-4 py-2 rounded-lg shadow-sm transition" onclick="window.location.href='rewards.html'">Claim Gift</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-gray-800">Concert Specials</h3>
+                                <span class="text-xl-light text-xs font-medium">View All</span>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                                    <div class="flex gap-3 items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-xs">FREE</div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-800">Unlimited Music Streaming</h4>
+                                            <p class="text-[10px] text-gray-400">Valid during concert dates</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-xl-blue font-bold text-sm bg-yellow-50 px-3 py-1.5 rounded-lg">Active</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-gray-800">More Specials Only For you</h3>
+                                <span class="text-xl-light text-xs font-medium">View All</span>
+                            </div>
+                            <div class="space-y-3">
+
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                                    <div class="flex gap-3 items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center">
+                                            <i class="fas fa-coffee"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-800">Kopi Kenangan Voucher</h4>
+                                            <p class="text-[10px] text-gray-400">Free 1 Regular Cup</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-xl-blue font-bold text-xs bg-gray-50 px-3 py-1.5 rounded-lg hover:bg-gray-100">Claim</button>
+                                </div>
+
+                                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                                    <div class="flex gap-3 items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-sm text-gray-800">Indomaret Rp 5k</h4>
+                                            <p class="text-[10px] text-gray-400">Discount on minimum spend</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-xl-blue font-bold text-xs bg-gray-50 px-3 py-1.5 rounded-lg hover:bg-gray-100">Claim</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="pageDemo" class="hidden h-full bg-gray-50 p-5">
+                    <h1 class="text-lg font-bold text-xl-blue">CleverTap PE Demo</h1>
+                    <p class="text-xs text-gray-500">Currently showing: Geofence triggered theme (Jakarta Concert).</p>
+                </div>
+            </div>
+
+            <div class="h-20 bg-white border-t border-gray-100 flex justify-around items-start pt-4 px-2 z-20">
+                <button onclick="switchPage('pageHome')" class="flex flex-col items-center gap-1 w-16 group">
+                    <i class="fas fa-home text-lg text-xl-blue"></i>
+                    <span class="text-[10px] font-medium text-xl-blue">Home</span>
+                </button>
+                <button class="flex flex-col items-center gap-1 w-16 group">
+                    <i class="fas fa-sliders-h text-lg text-gray-400"></i>
+                    <span class="text-[10px] font-medium text-gray-400">Capabilities</span>
+                </button>
+                <button class="flex flex-col items-center gap-1 w-16 group">
+                    <i class="fas fa-user text-lg text-gray-400"></i>
+                    <span class="text-[10px] font-medium text-gray-400">Account</span>
+                </button>
+            </div>
+
+            <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-32 h-1 bg-gray-300 rounded-full z-30"></div>
+        </div>
+    </div>
+
+    <script>
+        function switchPage(pageId) {
+            document.getElementById('pageHome').classList.add('hidden');
+            document.getElementById('pageDemo').classList.add('hidden');
+            const page = document.getElementById(pageId);
+            page.classList.remove('hidden');
+            page.classList.add('block');
+        }
+
+        function showPushNotification() {
+            const notif = document.getElementById('pushNotification');
+            notif.classList.remove('-translate-y-[150%]');
+            setTimeout(() => notif.classList.add('-translate-y-[150%]'), 4000);
+        }
+
+        function showInterstitial() {
+            alert("This would trigger a Westlife VIP experience interstitial.");
+        }
+    </script>
+</body>
+</html>

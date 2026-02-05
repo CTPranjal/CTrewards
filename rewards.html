@@ -1847,8 +1847,8 @@
                 console.log(data);
                 if (data.status === 'success' && data.records && data.records.length > 0) {
                     // Get active points from the first wallet (Wallet-1)
-const wallet = data.records.find(w => w.walletName === 'Alive Wallet');
-const activePoints = wallet ? wallet.activePoints : 0;
+                    const wallet = data.records.find(w => w.walletName === 'Alive Wallet');
+                    const activePoints = wallet ? wallet.activePoints : 0;
                     state.coins = activePoints;
                     elAmount.classList.remove('coin-loading');
 
@@ -1882,7 +1882,7 @@ const activePoints = wallet ? wallet.activePoints : 0;
                 return;
             }
 
-            fetch("https://script.google.com/macros/s/AKfycbx8Z76p2E59RDsUH5UCW5-q6Z6s2d5UYt-a9NyDkaFiWFXxCaU0yI6tTaKRaNxWySc7/exec?identity=${encodeURIComponent(USER_IDENTITY)}&walletId=${walletId}", {
+            fetch("https://script.google.com/macros/s/AKfycbyx-x-WwjNRC7xCxzF1VuIj4aEBhwCTZ9Mh4EICAoRc8Domls1J__lYJLouZNp4PWA/exec?identity=${encodeURIComponent(USER_IDENTITY)}&walletId=${walletId}", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: new URLSearchParams({
